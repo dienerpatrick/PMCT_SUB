@@ -6,7 +6,7 @@ This algorithm predicts the radiological alteration index (RAI) in post mortem c
 
 The goal of this project is to implement an algorithm which, using machine learning tools, predicts the radiological alteration index (RAI) of a post mortem computed tomography (PMCT) image.
 
-The main data pipeline is implemented. The project is set up in a way that is supposed to make it as time efficient as possible to test different model approaches on different datasets, in order to find an optimal solution. A number of models and datasets are already defined, a next step would be to target the problems arising in current approaches to develop a model architecture, which can then be trained on available data. Subsequently the trained model can be integrated in a tool designed to be used by radiologists.
+The main data pipeline is implemented. The project is set up in a way that is supposed to make it as time efficient as possible to test different model approaches on different datasets, in order to find an optimal solution. A number of models and datasets are already defined, a next step would be to target the problems arising in current approaches to develop a model architecture which can then be trained on available data. For better results additional data should be collected/generated.
 
 ## System Requirements
 
@@ -24,7 +24,7 @@ pytorch 1.10.1
 
 **note:** *maybe additional missing packages are required!*
 
-We highly recommend to install all the requirements in a new conda environment! If this is not familiar to you, refer to 	[here](https://conda.io/projects/conda/en/latest/user-guide/tasks/manage-environments.html).
+I highly recommend to install all the requirements in a conda environment! If this is not familiar to you, refer to 	[here](https://conda.io/projects/conda/en/latest/user-guide/tasks/manage-environments.html).
 
 ## File Structure
 
@@ -45,15 +45,14 @@ We highly recommend to install all the requirements in a new conda environment! 
 │   │   │   ├── train
 │   │   │   ├── val
 ├── src
-│   ├── data
-│   │   ├── datasets.py
-│   │   ├── make_dataset.py
-│   │   ├── split_data.py
-│   │   ├── transforms.py
-│   ├── models
-│   │   ├── models.py
-│   │   ├── train_model.py
-└── log
+│   ├── datasets.py
+│   ├── make_dataset.py
+│   ├── split_data.py
+│   ├── transforms.py
+│   ├── models.py
+│   ├── train_model.py
+├── log
+└── main.py
 ```
 
 
@@ -130,9 +129,9 @@ The file **models.py** provides space to define different models to then import 
 
 ## Training a Model
 
-### train_model.py
+### main.py
 
-The file **train_model.py** contains the main training function **train_model()** as well as various helper functions.
+The file **main.py** contains the main training function **train_model()** as well as various helper functions.
 
 ```
 train_model()
@@ -157,7 +156,7 @@ manual_seed:        [int] If given, manual torch seed is set.
 log_notes:          [string] String containing notes to add to log file.
 ```
 
-To train a model (defined in **models.py** and imported to **train_model.py**) on a dataset (defined in **datasets.py** and imported to **train_model.py**), the function train_model() simply needs to ne called with the desired parameters.
+To train a model (defined in **models.py** and imported to **main.py**) on a dataset (defined in **datasets.py** and imported to **main.py**), the function train_model() simply needs to ne called with the desired parameters.
 
 ### Log Files
 
@@ -165,7 +164,13 @@ For every call of **train_model()**, a folder of the name **[year_month_day__hou
 
 ## Possible Approaches for Future Development
 
-One of the main problems of the project so far is the availability of training data. On one hand the available data is very sparse, on the other hand it is massively imbalanced towards low RAI.
+One of the main problems of the project so far is the availability of training data. On one hand the available data is very sparse, on the other hand it is massively imbalanced towards low RAI. To properly train a CNN on the problem, on one hand more data will be needed, on the other hand the imbalance must be counteracted upon. More data could be gathered by rendering more cases or by augmenting the existing data, especially the samples of the underrepresented classes. 
+
+A topic probably worth thinking about is preprocessing. Maybe it is easier to train a network if the images are processed in a certain way before they are passed to the model.
+
+I only worked with CNNs, maybe the best solution lies in a different approach.
+
+
 
 
 
