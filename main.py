@@ -401,3 +401,4 @@ train_model(model=m.AlexNetBN1,
             save_model=False,
             metrics=['confusion_matrix', 'loss_plot', 'accuracy_plot'],
             log_notes="AlexNetBN1 model with dataset minipAPAlexNet25")
+
