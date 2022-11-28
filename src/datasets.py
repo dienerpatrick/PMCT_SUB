@@ -9,9 +9,6 @@ VAL_LABELS = "../data/processed/MDCT_SPLIT/val_labels.csv"
 MINIP_TRAIN = "../data/processed/MDCT_SPLIT/MINIP/train"
 MINIP_VAL = "../data/processed/MDCT_SPLIT/MINIP/val"
 
-# 2 classes of ca. equal size: [(0, 6), (7, 100)]
-# 3 classes of similar size: [(0, 1), (2, 25), (26, 100)]
-
 ########################### MINIP AP Greyscale ###########################
 
 tsfrm = T.Compose([T.ToPILImage(),
