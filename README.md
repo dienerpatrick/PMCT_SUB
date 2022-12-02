@@ -26,35 +26,6 @@ pytorch 1.10.1
 
 I highly recommend to install all the requirements in a conda environment! If this is not familiar to you, refer to 	[here](https://conda.io/projects/conda/en/latest/user-guide/tasks/manage-environments.html).
 
-## File Structure
-
-```
-
-├── data
-│   ├── processed
-│   │   ├── AVG
-│   │   │   ├── train
-│   │   │   ├── val
-│   │   ├── COMBINED
-│   │   │   ├── train
-│   │   │   ├── val
-│   │   ├── MINIP
-│   │   │   ├── train
-│   │   │   ├── val
-│   │   ├── MIP
-│   │   │   ├── train
-│   │   │   ├── val
-├── src
-│   ├── datasets.py
-│   ├── make_dataset.py
-│   ├── split_data.py
-│   ├── transforms.py
-│   ├── models.py
-│   ├── train_model.py
-├── log
-└── main.py
-```
-
 
 ## Preprocessing
 
@@ -129,7 +100,7 @@ train_val_split(root_folder = "./data/raw",
                 val_split = 0.2)
 ```
 
-To split the **labels.csv** file according to the image split, the function **label_split()** is used:
+To split the **labels.csv** file according to the image split, the function **label_split()** is used. It takes the lines of the .csv file and splits them into two seperate file **train_labels.csv** and **val_labels.csv** according to the images in the split folders.
 
 ```
 label_split(root_labels, dest_labels, train_folder, val_folder):
@@ -144,7 +115,16 @@ val_folder: path to folder containing val images
 return: None
 ```
 
-After the function call, the folder structure would look as follows:
+To split the **labels.csv** file into two seperate files, the following function call is made:
+
+```
+label_split(root_labels = "./data/raw/labels.csv", 
+            dest_labels = "./data/split", 
+            train_folder = "./data/split/AVG/train", 
+            val_folder = "./data/split/AVG/val")
+```
+
+After the two function calls, the example folder structure would look as follows:
 
 ```
 
@@ -164,6 +144,36 @@ After the function call, the folder structure would look as follows:
 │   │   │   ├── mip_1823.png
 │   │   │   ├── ...
 │   ├── split
+│   │   ├── train_labels.csv
+│   │   ├── val_labels.csv
+│   │   ├── AVG
+│   │   │   ├── train
+│   │   │   │   ├── average_1823.png
+│   │   │   │   ├── ...
+│   │   │   ├── val
+│   │   │   │   ├── average_1931.png
+│   │   │   │   ├── ...
+│   │   ├── COMBINED
+│   │   │   ├── train
+│   │   │   │   ├── combined_1823.png
+│   │   │   │   ├── ...
+│   │   │   ├── val
+│   │   │   │   ├── combined_1931.png
+│   │   │   │   ├── ...
+│   │   ├── MINIP
+│   │   │   ├── train
+│   │   │   │   ├── minip_1823.png
+│   │   │   │   ├── ...
+│   │   │   ├── val
+│   │   │   │   ├── minip_1931.png
+│   │   │   │   ├── ...
+│   │   ├── MIP
+│   │   │   ├── train
+│   │   │   │   ├── mip_1823.png
+│   │   │   │   ├── ...
+│   │   │   ├── val
+│   │   │   │   ├── mip_1931.png
+│   │   │   │   ├── ...
 ├── src
 │   ├── datasets.py
 │   ├── make_dataset.py
@@ -175,31 +185,6 @@ After the function call, the folder structure would look as follows:
 └── main.py
 ```
 
-
-
-train_val_split()
-
-Takes images from subfolders of root_folder, randomly selects same val_split fraction of images for all subfolders,
-moves train and validation split to dest_folder in new folders train and val.
-
-root_folder:      path to root folder
-root_subfolders:  subfolders in root folder
-dest_folder:      destination folder
-val_split:        [float] between 0 and 1; validation split
-```
-
-
-```
-label_split()
-
-Takes csv file containing image-ID/label pairs, and splits them, based on the folders containing the images
-split in train and val, into two csv files, containing the labels for train and val splits respectively.
-
-root_labels:      path to root csv file
-dest_labels:      destination folder
-train_folder:     path to folder containing train images
-val_folder:       path to folder containing val images
-```
 
 ### make_dataset.py
 
