@@ -83,11 +83,11 @@ train_val_split(root_folder, root_subfolders, dest_folder, val_split, random_see
 Takes images from subfolders of root_folder, randomly selects same val_split fraction of images for all subfolders,
 moves train and validation split to dest_folder in new folders train and val.
 
-root_folder: path to root folder
-root_subfolders: subfolders in root folder
-dest_folder: destination folder
-val_split: [float] between 0 and 1; validation split
-return: None
+root_folder:        path to root folder
+root_subfolders:    subfolders in root folder
+dest_folder:        destination folder
+val_split:          [float] between 0 and 1, validation split
+return:             None
 
 ```
 
@@ -100,7 +100,7 @@ train_val_split(root_folder = "./data/raw",
                 val_split = 0.2)
 ```
 
-To split the **labels.csv** file according to the image split, the function **label_split()** is used. It takes the lines of the .csv file and splits them into two seperate file **train_labels.csv** and **val_labels.csv** according to the images in the split folders.
+To split the **labels.csv** file according to the image split, the function **label_split()** is used. It takes the lines of the .csv file and splits them into two seperate file **train_labels.csv** and **val_labels.csv** according to the images in a given split folder. This can be any of the folders containing the split images, since 
 
 ```
 label_split(root_labels, dest_labels, train_folder, val_folder):
@@ -108,11 +108,11 @@ label_split(root_labels, dest_labels, train_folder, val_folder):
 Takes csv file containing image-ID/label pairs, and splits them, based on the folders containing the images
 split in train and val, into two csv files, containing the labels for train and val splits respectively.
 
-root_labels: path to root csv file
-dest_labels: destination folder
-train_folder: path to folder containing train images
-val_folder: path to folder containing val images
-return: None
+root_labels:        path to root csv file
+dest_labels:        destination folder
+train_folder:       path to folder containing train images
+val_folder:         path to folder containing val images
+return:             None
 ```
 
 To split the **labels.csv** file into two seperate files, the following function call is made:
