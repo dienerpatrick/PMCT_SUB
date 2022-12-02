@@ -251,6 +251,28 @@ log_notes:          [string] String containing notes to add to log file.
 
 To train a model (defined in **models.py** and imported to **main.py**) on a dataset (defined in **datasets.py** and imported to **main.py**), the function train_model() simply needs to ne called with the desired parameters.
 
+A function call of **train_model.py** could look like the following example:
+
+```
+import src.datasets as ds
+import src.models as m
+
+train_model(model=m.AlexNetBN1,
+            dataset=ds.minipAPAlexNet25,
+            k_folds=5,
+            learning_rate=1e-4,
+            weight_decay=0,
+            batch_size=10,
+            epochs=30,
+            loss_function=nn.CrossEntropyLoss(),
+            optimizer=torch.optim.Adam,
+            class_weights="auto_balance",
+            pretrained=False,
+            save_model=False,
+            metrics=['confusion_matrix', 'loss_plot', 'accuracy_plot'],
+            log_notes="AlexNetBN1 model with dataset minipAPAlexNet25")
+```
+
 ### Log Files
 
 For every call of **train_model()**, a folder of the name **[year_month_day__hour_minute_second]_model_log** is created in the **root/log** folder. This folder contains a **model_log.txt** file containing a description of the model, dataset and hyperparameters used, as well as performance scores. Additionally for every metric chosen under the attribute **metrics** in **train_model()**, a folder is created containing the results for every fold seperately.
