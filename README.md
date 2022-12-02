@@ -60,7 +60,7 @@ I highly recommend to install all the requirements in a conda environment! If th
 
 **Input files**
 
-The input images must be in png format and have a width of 512 pixels, the height may vary. The last four digits of the filename must contain the file ID. A seperate csv file contains the IDs in the first column and the corresponding RA-Index in the second column. The files should be split and stored as depicted in the section **File Structure**
+The input images must be in **.png** format and have a width of 512 pixels, the height may vary. The last four digits of the filename must contain the file ID. A seperate csv file contains the IDs in the first column and the corresponding RA-Index in the second column. The files should be split and stored as depicted in the section **Creating a Dataset**.
 
 ## Creating a Dataset
 
@@ -68,7 +68,115 @@ The input images must be in png format and have a width of 512 pixels, the heigh
 
 The file **split_data.py** contains two functions **train_val_split()** and **label_split()**.
 
+### Recipe to split raw data
+
+The initial state the data must be in is the following:
+All the image groups (for example different projections or views) must be in seperate folders in the **/raw** folder.
+The folder structure might look like this:
+
 ```
+
+├── data
+│   ├── raw
+│   │   ├── labels.csv
+│   │   ├── AVG
+│   │   │   ├── average_1823.png
+│   │   │   ├── ...
+│   │   ├── COMBINED
+│   │   │   ├── combined_1823.png
+│   │   │   ├── ...
+│   │   ├── MINIP
+│   │   │   ├── minip_1823.png
+│   │   │   ├── ...
+│   │   ├── MIP
+│   │   │   ├── mip_1823.png
+│   │   │   ├── ...
+│   ├── split
+├── src
+│   ├── datasets.py
+│   ├── make_dataset.py
+│   ├── split_data.py
+│   ├── transforms.py
+│   ├── models.py
+│   ├── train_model.py
+├── log
+└── main.py
+```
+
+To split the data folders into train and val split, the functions in **split_data.py** are used.
+The function **train_val_split()** splits the images of a given group of folders into **train** and **val** groups and saves them into seperate folders in a destination directory.
+
+```
+train_val_split(root_folder, root_subfolders, dest_folder, val_split, random_seed=None):
+
+Takes images from subfolders of root_folder, randomly selects same val_split fraction of images for all subfolders,
+moves train and validation split to dest_folder in new folders train and val.
+
+root_folder: path to root folder
+root_subfolders: subfolders in root folder
+dest_folder: destination folder
+val_split: [float] between 0 and 1; validation split
+return: None
+
+```
+
+The function call to split the above example folders would look like the following:
+
+```
+train_val_split(root_folder = "./data/raw",
+                root_subfolders = ["AVG", "COMBINED", "MINIP", "MIP"],
+                dest_folder = "./data/split"
+                val_split = 0.2)
+```
+
+To split the **labels.csv** file according to the image split, the function **label_split()** is used:
+
+```
+label_split(root_labels, dest_labels, train_folder, val_folder):
+
+Takes csv file containing image-ID/label pairs, and splits them, based on the folders containing the images
+split in train and val, into two csv files, containing the labels for train and val splits respectively.
+
+root_labels: path to root csv file
+dest_labels: destination folder
+train_folder: path to folder containing train images
+val_folder: path to folder containing val images
+return: None
+```
+
+After the function call, the folder structure would look as follows:
+
+```
+
+├── data
+│   ├── raw
+│   │   ├── labels.csv
+│   │   ├── AVG
+│   │   │   ├── average_1823.png
+│   │   │   ├── ...
+│   │   ├── COMBINED
+│   │   │   ├── combined_1823.png
+│   │   │   ├── ...
+│   │   ├── MINIP
+│   │   │   ├── minip_1823.png
+│   │   │   ├── ...
+│   │   ├── MIP
+│   │   │   ├── mip_1823.png
+│   │   │   ├── ...
+│   ├── split
+├── src
+│   ├── datasets.py
+│   ├── make_dataset.py
+│   ├── split_data.py
+│   ├── transforms.py
+│   ├── models.py
+│   ├── train_model.py
+├── log
+└── main.py
+```
+
+
+
 train_val_split()
 
 Takes images from subfolders of root_folder, randomly selects same val_split fraction of images for all subfolders,
